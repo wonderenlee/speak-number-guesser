@@ -19,7 +19,7 @@ function onSpeak(e) {
 
     // console.log(msg);
     writeMessage(msg);
-    // checkNumber(msg);
+    checkNumber(msg);
 }
 
 // Write what user speaks
@@ -35,28 +35,28 @@ function checkNumber(msg) {
     const num = +msg;
 
     // Check if valid number
-    if(Number.isNaN(num)) {
-        msgElement.innerHTML = '<div>That is not a valid number</div>';
+    if (Number.isNaN(num)) {
+        msgEl.innerHTML = '<div>That is not a valid number</div>';
         return;
     }
 
     // Check in range
-    if(num > 100 || num < 1) {
-        msgElement.innerHTML += '<div>Number must be between 1 and 100</div>';
+    if (num > 100 || num < 1) {
+        msgEl.innerHTML += '<div>Number must be between 1 and 100</div>';
         return;
     }
 
     // Check number
-    if(num === randomNum) {
+    if (num === randomNum) {
         document.body.innerHTML = `
         <h2>Congrats! You have guessed the number! <br><br>
-        It was ${num}!</h2>
+        It was ${num}</h2>
         <button class="play-again" id="play-again">Play Again</button>
         `;
-    } else if(num > randomNum) {
-        msgElement.innerHTML += '<div>GO LOWER</div>';
+    } else if (num > randomNum) {
+        msgEl.innerHTML += '<div>GO LOWER</div>';
     } else {
-        msgElement.innerHTML += '<div>GO HIGHER</div>';
+        msgEl.innerHTML += '<div>GO HIGHER</div>';
     }
 }
 
@@ -64,3 +64,15 @@ function checkNumber(msg) {
 function getRandomNumber() {
     return Math.floor(Math.random() * 100 ) + 1;
 }
+
+// Speak result
+recognition.addEventListener('result', onSpeak);
+
+// End Speech Recognition service
+recognition.addEventListener('end', () => recognition.start());
+
+document.body.addEventListener('click', (e) => {
+    if (e.target.id == 'play-again') {
+        window.location.reload();
+    }
+});
